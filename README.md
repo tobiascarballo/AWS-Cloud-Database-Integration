@@ -12,35 +12,6 @@ La intención del proyecto es didáctica: mostrar cómo desacoplar acceso a la b
 
 ---
 
-## 🏗️ Arquitectura y Flujo de Datos
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Server as TCP Server
-    participant Proxy as DataProxy (Log)
-    participant Singleton as DB Singleton
-    participant AWS as AWS DynamoDB
-    participant Observer as Observer Manager
-
-    Client->>Server: Envía comando (SET/GET)
-    Server->>Proxy: Delega petición
-    Proxy->>Proxy: Registra Auditoría (Log)
-    Proxy->>Singleton: Solicita Instancia DB
-    Singleton->>AWS: Ejecuta Operación (Boto3)
-    AWS-->>Singleton: Retorna Resultado
-    
-    alt es una operación de escritura (SET)
-        Singleton->>Observer: Notifica cambio
-        Observer-->>Client: Envía evento a suscriptores
-    end
-    
-    Singleton-->>Proxy: Retorna Datos
-    Proxy-->>Server: Retorna Datos
-    Server-->>Client: Respuesta JSON
-
----
-
 ## 🛠️ 1. Tecnologías y Componentes Clave
 
 | Componente | Archivo/Módulo | Rol en el Flujo |
@@ -81,7 +52,7 @@ sequenceDiagram
 
 En el entorno del proyecto:
 
-```powershell
+```bash
 python -m pip install -r requirements.txt
 ```
 
@@ -89,7 +60,7 @@ python -m pip install -r requirements.txt
 
 Por defecto escucha en el puerto 8080. Puedes cambiar el puerto con `-p`.
 
-```powershell
+```bash
 python src\singletonproxyobserver.py -p 8080
 ```
 
@@ -97,19 +68,19 @@ python src\singletonproxyobserver.py -p 8080
 
 Ejemplo `set` (usa los JSON en `data/`):
 
-```powershell
+```bash
 python src\singletonclient.py -i data\test_set.json -p 8080
 ```
 
 Ejemplo `get`:
 
-```powershell
+```bash
 python src\singletonclient.py -i data\test_get.json -p 8080
 ```
 
 Suscribirte como observador (recibirás notificaciones sobre `set`):
 
-```powershell
+```bash
 python src\observerclient.py -s localhost -p 8080
 ```
 
@@ -121,19 +92,19 @@ Hay tests de aceptación que esperan tablas DynamoDB creadas y accesibles por la
 
 - Ejecutar tests de aceptación (requiere las tablas):
 
-```powershell
+```bash
 python -m unittest tests/test_acceptance.py -v
 ```
 
 - Prueba de conexión a DynamoDB (útil para verificar credenciales y tablas):
 
-```powershell
+```bash
 python tests/test_conexion.py
 ```
 
 Si necesitas correr pruebas unitarias/rápidas puedes usar pytest (si lo deseas):
 
-```powershell
+```bash
 pytest -q
 ```
 
