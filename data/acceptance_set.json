@@ -1,0 +1,10 @@
+{
+    "ACTION": "set",
+    "id": "test_acceptance_001",
+    "idreq": "9001",
+    "data": {
+        "test": "acceptance test data",
+        "timestamp": "2025-11-03",
+        "description": "Registro de prueba para validación"
+    }
+}

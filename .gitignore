@@ -1,0 +1,16 @@
+# Ignora las credenciales (no estan en el proyecto pero por si acaso).
+IS2_TPFI_credentials.json
+
+# Ignora las carpetas de caché que crea Python
+__pycache__/
+*.pyc
+
+# Archivos de Tests y Cobertura
+.pytest_cache/
+.coverage
+
+# Archivos de Log
+*.log
+
+# Archivos temporales del test
+data/acceptance_no_id.json
